@@ -126,8 +126,9 @@ app.post('/savepost', (req, res) => {
   connection.query(queryPostAdd, [userId, paperId, body], (error, results, fields) => {
     if (error) {
       console.error('Error:', error);
-      return res.status(500).json({ error: 'Internal Server Error' });
+      return res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
+    
 
     const newPostId = results.insertId;
     return res.json({ postId: newPostId });
