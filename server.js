@@ -171,9 +171,9 @@ app.post('/hasroll', (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
 
-    const paperIds = results[0].paperId;
+    const paperIds = results.map(result => result.paperId);
 
-    if (paperIds > 0) {
+    if (paperIds.length > 0) {
       res.json({ message: 'true', paperId: paperIds });
     } else {
       res.json({ message: 'false' });
