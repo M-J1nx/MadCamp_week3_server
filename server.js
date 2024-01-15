@@ -129,7 +129,7 @@ app.post('/savepost', (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
     const newPostId = results.insertId;
-    return res.json({ postId: newPostId });
+    return res.json(results);
   });
 });
 
