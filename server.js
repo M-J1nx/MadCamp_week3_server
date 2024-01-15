@@ -149,6 +149,7 @@ app.get('/getpost', (req, res) => {
 
 /* Show User Board */
 app.get('/getname', (req, res) => {
+  const { paperId } = req.query;
   const queryAll = `SELECT * FROM user INNER JOIN paper ON user.userId = paper.userId WHERE paperId=?`;
   connection.query(queryAll, [ paperId ], (error, results, fields) => {
     if (error) {
