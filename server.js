@@ -163,20 +163,24 @@ app.get('/getname', (req, res) => {
 /* Chceck paper */
 app.post('/hasroll', (req, res) => {
   const { userId } = req.body;
-  const queryUserPaper = `SELECT paperId FROM paper WHERE userId=?`;
-  connection.query(queryUserPaper, [ userId ], (error, results, fields) => {
+  const queryUserPaper = `SELECT paperId, COUNT(*) AS count FROM paper WHERE userId=? GROUP BY paperId`;
+  
+  connection.query(queryUserPaper, [userId], (error, results, fields) => {
     if (error) {
       console.error('Error querying MySQL: ', error);
-      return res.status(500).json({error: 'Internal Server Error'});
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
 
-    if (results[0].paperId != null) {
-      res.json({message: 'true', paperId: results[0].paperId});
+    const paperIds = results.map(result => result.paperId);
+
+    if (paperIds.length > 0) {
+      res.json({ message: 'true', paperIds: paperIds });
     } else {
-      res.json({message: 'false', paperId: 'null'});
+      res.json({ message: 'false' });
     }
   });
 });
+
 
 
 /* Keep receiving request */
