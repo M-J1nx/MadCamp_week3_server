@@ -173,8 +173,8 @@ app.post('/hasroll', (req, res) => {
 
     const paperIds = results[0].paperId;
 
-    if (paperIds.length > 0) {
-      res.json({ message: 'true', paperIds: paperIds });
+    if (paperIds > 0) {
+      res.json({ message: 'true', paperId: paperIds });
     } else {
       res.json({ message: 'false' });
     }
