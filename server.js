@@ -137,13 +137,13 @@ app.post('/savepost', (req, res) => {
 app.get('/getpost', (req, res) => {
   const { paperId } = req.query;
   // const queryPostAll = `SELECT * FROM post WHERE paperId=?`;
-  const queryPostAll = `SELECT * FROM user INNER JOIN post ON user.userId = post.userId WHERE paperId=?`;
-  connection.query(queryPostAll, [ userName, body ], (error, results, fields) => {
+  const queryPostAll = `SELECT * FROM user INNER JOIN post ON user.userId = post.userId `;
+  connection.query(queryPostAll, [ paperId ], (error, results, fields) => {
     if (error) {
       console.error('Error querying MySQL: ', error);
       return res.status(500).json({error: 'Internal Server Error'});
     }
-    res.json({ userName: userName, body: body });
+    res.json(results);
   });
 });
 
