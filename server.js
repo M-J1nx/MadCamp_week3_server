@@ -135,7 +135,7 @@ app.post('/Toosleepyyy', (req, res) => {
 });
 
 /* Show Entire Posts */
-app.get('/fdsfa', (req, res) => {
+app.get('/getpost', (req, res) => {
   const { paperId } = req.query;
   const queryPostAll = `SELECT * FROM post WHERE paperId=?`;
   connection.query(queryPostAll, [ paperId ], (error, results, fields) => {
