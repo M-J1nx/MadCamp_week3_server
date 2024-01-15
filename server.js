@@ -155,7 +155,7 @@ app.get('/getname', (req, res) => {
       console.error('Error querying MySQL: ', error);
       return res.status(500).json({error: 'Internal Server Error'});
     }
-    res.json({ userName: userName });
+    res.json(result);
   });
 });
 
