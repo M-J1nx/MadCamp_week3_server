@@ -181,7 +181,19 @@ app.post('/hasroll', (req, res) => {
   });
 });
 
+/* Get user all posts body */
+app.get('/result', (req, res) => {
+  const { paperId } = req.query;
+  const queryGetPostBody = `SELECT * FROM post WHERE paperId=?`;
 
+  connection.query(queryGetPostBody, [ paperId ], (error, results, fields) => {
+    if (error) {
+      console.error('Error querying MySQL: ', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    return res.json(results);
+  });
+});
 
 /* Keep receiving request */
 app.listen(port, () => {
