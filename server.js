@@ -163,14 +163,15 @@ app.get('/getname', (req, res) => {
 /* Chceck paper */
 app.post('/hasroll', (req, res) => {
   const { userId } = req.body;
-  const queryUserPaper = `SELECT COUNT(*) FROM paper WHERE userId=?`;
+  const queryUserPaper = `SELECT paperId FROM paper WHERE userId=?`;
   connection.query(queryUserPaper, [ userId ], (error, results, fields) => {
     if (error) {
       console.error('Error querying MySQL: ', error);
       return res.status(500).json({error: 'Internal Server Error'});
     }
-    if (results > 0)
-      res.json({message: 'true'});
+
+    if (results[0].paperId != null)
+      res.json({message: 'true', paperId: results[0].paperId});
     else  
       res.json({message: 'false'});
   });
