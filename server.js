@@ -160,6 +160,23 @@ app.get('/getname', (req, res) => {
   });
 });
 
+/* Chceck paper */
+app.post('/hasroll', (req, res) => {
+  const { userId } = req.body;
+  const queryUserPaper = `SELECT COUNT(*) FROM paper WHERE userId=?`;
+  connection.query(queryUserPaper, [ userId ], (error, results, fields) => {
+    if (error) {
+      console.error('Error querying MySQL: ', error);
+      return res.status(500).json({error: 'Internal Server Error'});
+    }
+    if (results > 0)
+      res.json({message: 'true'});
+    else  
+      res.json({message: 'false'});
+  });
+});
+
+
 /* Keep receiving request */
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
