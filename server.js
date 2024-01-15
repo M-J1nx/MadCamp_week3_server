@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
   host: '43.202.79.6',
   user: 'mj1838',
   password: 'tj11021223',
-  database: 'madcampweek3'
+  database: 'madcampWeek3'
 });
 
 app.use(cors({
