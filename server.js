@@ -122,14 +122,14 @@ app.get('/all', (req, res) => {
 app.post('/savepost', (req, res) => {
   const { paperId, userId, body } = req.body;
   
-  const queryPostAdd = 'INSERT INTO post (userId, paperId, body) VALUES (?, ?, ?)';
+  const queryPostAdd = 'INSERT INTO post (paperId, userId, body) VALUES (?, ?, ?)';
   connection.query(queryPostAdd, [paperId, userId, body], (error, results, fields) => {
     if (error) {
       console.error('Error:', error);
       return res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
     const newPostId = results.insertId;
-    return res.json(results);
+    return res.json({ postId: newPostId });
   });
 });
 
