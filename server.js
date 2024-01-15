@@ -196,22 +196,22 @@ app.get('/result', (req, res) => {
   });
 });
 
-/* execute python file */
-app.get('/executePython', (req, res) => {
-  const content = req.query.content;
-  const command = `python C:/Users/mj183/OneDrive/바탕 화면/MadCampWeek3/MadCamp_week3_front/src/components/SummaryAPI.py "${content}"`;
+// /* execute python file */
+// app.get('/executePython', (req, res) => {
+//   const content = req.query.content;
+//   const command = `python C:\\Users\\mj183OneDrive/바탕 화면/MadCampWeek3/MadCamp_week3_front/src/components/SummaryAPI.py "${content}"`;
 
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing Python script: ${error.message}`);
-      return res.status(500).send({ error: 'Internal Server Error' });
-    }
+//   exec(command, (error, stdout, stderr) => {
+//     if (error) {
+//       console.error(`Error executing Python script: ${error.message}`);
+//       return res.status(500).send({ error: 'Internal Server Error' });
+//     }
 
-    // Python 스크립트의 결과 출력
-    console.log(`Python script output: ${stdout}`);
-    res.json({ result: stdout });
-  });
-});
+//     // Python 스크립트의 결과 출력
+//     console.log(`Python script output: ${stdout}`);
+//     res.json({ result: stdout });
+//   });
+// });
 
 
 /* Keep receiving request */
