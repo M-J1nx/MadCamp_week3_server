@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const { exec } = require('child_process');
 const cors = require("cors");
 const app = express();
 const port = 3001;
@@ -194,6 +195,24 @@ app.get('/result', (req, res) => {
     return res.json(results);
   });
 });
+
+/* execute python file */
+app.get('/executePython', (req, res) => {
+  const content = req.query.content;
+  const command = `python C:\Users\mj183\OneDrive\바탕 화면\MadCampWeek3\MadCamp_week3_front\src\components\SummaryAPI.py "${content}"`;
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing Python script: ${error.message}`);
+      return res.status(500).send({ error: 'Internal Server Error' });
+    }
+
+    // Python 스크립트의 결과 출력
+    console.log(`Python script output: ${stdout}`);
+    res.json({ result: stdout });
+  });
+});
+
 
 /* Keep receiving request */
 app.listen(port, () => {
