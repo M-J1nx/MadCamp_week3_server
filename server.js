@@ -199,7 +199,7 @@ app.get('/result', (req, res) => {
 /* execute python file */
 app.get('/executePython', (req, res) => {
   const content = req.query.content;
-  const command = `python C:\Users\mj183\OneDrive\바탕 화면\MadCampWeek3\MadCamp_week3_front\src\components\SummaryAPI.py "${content}"`;
+  const command = `python C:/Users/mj183/OneDrive/바탕 화면/MadCampWeek3/MadCamp_week3_front/src/components/SummaryAPI.py "${content}"`;
 
   exec(command, (error, stdout, stderr) => {
     if (error) {
