@@ -147,6 +147,18 @@ app.get('/getpost', (req, res) => {
   });
 });
 
+/* Show User Board */
+app.get('/', (req, res) => {
+  const queryAll = `SELECT * FROM user INNER JOIN post ON user.userId = paper.userId WHERE paperId=?`;
+  connection.query(queryAll, (error, results, fields) => {
+    if (error) {
+      console.error('Error querying MySQL: ', error);
+      return res.status(500).json({error: 'Internal Server Error'});
+    }
+    res.json({ userName: userName });
+  });
+});
+
 /* Keep receiving request */
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
