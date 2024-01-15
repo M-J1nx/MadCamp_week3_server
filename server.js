@@ -8,10 +8,10 @@ const port = 3001;
 app.use(bodyParser.json());
 
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
+  host: '43.202.79.6',
+  user: 'mj1838',
   password: 'tj11021223',
-  database: 'madcampweek3'
+  database: 'madcampWeek3'
 });
 
 app.use(cors({
@@ -21,6 +21,7 @@ app.use(cors({
 }))
 
 connection.connect();
+
 
 /* Login Page */
 app.post('/login', (req, res) => {
@@ -51,30 +52,100 @@ app.post('/login', (req, res) => {
 
 /* Sign up Page */
 app.post('/signup', (req, res) => {
-    const { userId, userPw, userName } = req.body;
-    const queryIDCheck = 'SELECT * FROM user WHERE userId = ?';
+  const { userId, userPw, userName } = req.body;
+  const queryIDCheck = 'SELECT * FROM user WHERE userId = ?';
+
+  connection.query(queryIDCheck, [userId], (error, results, fields) => {
+    if (error) {
+      console.error('Error checking userId:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
   
-    connection.query(queryIDCheck, [userId], (error, results, fields) => {
-      if (error) {
-        console.error('Error checking userId:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
-      }
-  
-      if (results.length > 0) {
-        return res.json({ message: 'false' });
-      } else {
-        const querySignup = 'INSERT INTO user (userId, userPw, userName) VALUES (?, ?, ?)';
-        connection.query(querySignup, [userId, userPw, userName], (error, results, fields) => {
-          if (error) {
-            console.error('Error during signup:', error);
-            return res.status(500).json({ error: 'Internal Server Error' });
-          }
-          return res.json({ message: 'true' }); 
-        });
-      }
-    });
+    if (results.length > 0) {
+      return res.json({ message: 'false' });
+    } else {
+      const querySignup = 'INSERT INTO user (userId, userPw, userName) VALUES (?, ?, ?)';
+      connection.query(querySignup, [userId, userPw, userName], (error, results, fields) => {
+        if (error) {
+          console.error('Error during signup:', error);
+          return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return res.json({ message: 'true' }); 
+      });
+    }
   });
+});
+
+/* Create Rolling Paper */
+app.post('/Roll', (req, res) => {
+  const { userId } = req.body;
+  const queryPaperID = 'SELECT * FROM paper WHERE userId = ?';
+
+  connection.query(queryPaperID, [userId], (error, results, fields) => {
+    if (error) {
+      console.error('Error:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    if (results.length > 0) {
+      return res.json({ paperId: '이미 존재하는 롤링 페이퍼임' });
+    } else {
+      const querySignup = 'INSERT INTO paper (userId) VALUES (?)';
+
+      connection.query(querySignup, [userId], (insertError, insertResults, insertFields) => {
+        if (insertError) {
+          console.error('Error:', insertError);
+          return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        const newPaperId = insertResults.insertId; // 새롭게 생성된 롤링 페이퍼의 ID
+
+        return res.json({ paperId: newPaperId });
+      });
+    }
+  });
+});
+
+/* Show Entire Board */
+app.get('/all', (req, res) => {
+  const queryAll = `SELECT paperId FROM paper`;
+  connection.query(queryAll, (error, results, fields) => {
+    if (error) {
+      console.error('Error querying MySQL: ', error);
+      return res.status(500).json({error: 'Internal Server Error'});
+    }
+    res.json(results);
+  });
+});
+
+/* Create Post to Rolling Paper */
+app.post('/Toosleepyyy', (req, res) => {
+  const { paperId, userId, body } = req.body;
   
+  const queryPostAdd = 'INSERT INTO post (userId, paperId, body) VALUES (?, ?, ?)';
+  connection.query(queryPostAdd, [userId, paperId, body], (error, results, fields) => {
+    if (error) {
+      console.error('Error:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    const newPostId = results.insertId;
+    return res.json({ postId: newPostId });
+  });
+});
+
+/* Show Entire Posts */
+app.get('/fdsfa', (req, res) => {
+  const { paperId } = req.query;
+  const queryPostAll = `SELECT * FROM post WHERE paperId=?`;
+  connection.query(queryPostAll, [ paperId ], (error, results, fields) => {
+    if (error) {
+      console.error('Error querying MySQL: ', error);
+      return res.status(500).json({error: 'Internal Server Error'});
+    }
+    res.json(results);
+  });
+});
 
 /* Keep receiving request */
 app.listen(port, () => {
