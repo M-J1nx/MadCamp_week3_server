@@ -24,7 +24,7 @@ connection.connect();
 
 
 /* Login Page */
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
     const { userId, userPw } = req.body;
     const queryID = 'SELECT * FROM user WHERE userId = ?';
 
