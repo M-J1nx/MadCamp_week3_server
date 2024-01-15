@@ -119,7 +119,7 @@ app.get('/all', (req, res) => {
 });
 
 /* Create Post to Rolling Paper */
-app.post('/Toosleepyyy', (req, res) => {
+app.post('/savepost', (req, res) => {
   const { paperId, userId, body } = req.body;
   
   const queryPostAdd = 'INSERT INTO post (userId, paperId, body) VALUES (?, ?, ?)';
