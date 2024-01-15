@@ -123,13 +123,11 @@ app.post('/savepost', (req, res) => {
   const { paperId, userId, body } = req.body;
   
   const queryPostAdd = 'INSERT INTO post (userId, paperId, body) VALUES (?, ?, ?)';
-  connection.query(queryPostAdd, [userId, paperId, body], (error, results, fields) => {
+  connection.query(queryPostAdd, [paperId, userId, body], (error, results, fields) => {
     if (error) {
       console.error('Error:', error);
       return res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
-    
-
     const newPostId = results.insertId;
     return res.json({ postId: newPostId });
   });
@@ -138,13 +136,14 @@ app.post('/savepost', (req, res) => {
 /* Show Entire Posts */
 app.get('/getpost', (req, res) => {
   const { paperId } = req.query;
-  const queryPostAll = `SELECT * FROM post WHERE paperId=?`;
-  connection.query(queryPostAll, [ paperId ], (error, results, fields) => {
+  // const queryPostAll = `SELECT * FROM post WHERE paperId=?`;
+  const queryPostAll = `SELECT * FROM user INNER JOIN post ON user.userId = post.userId WHERE paperId=?`;
+  connection.query(queryPostAll, [ userName, body ], (error, results, fields) => {
     if (error) {
       console.error('Error querying MySQL: ', error);
       return res.status(500).json({error: 'Internal Server Error'});
     }
-    res.json(results);
+    res.json({ userName: userName, body: body });
   });
 });
 
