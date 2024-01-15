@@ -173,7 +173,7 @@ app.post('/hasroll', (req, res) => {
     if (results[0].paperId != null) {
       res.json({message: 'true', paperId: results[0].paperId});
     } else {
-      res.json({message: 'false'});
+      res.json({message: 'false', paperId: 'null'});
     }
   });
 });
