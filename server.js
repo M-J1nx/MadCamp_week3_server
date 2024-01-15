@@ -150,7 +150,7 @@ app.get('/getpost', (req, res) => {
 /* Show User Board */
 app.get('/getname', (req, res) => {
   const queryAll = `SELECT * FROM user INNER JOIN paper ON user.userId = paper.userId WHERE paperId=?`;
-  connection.query(queryAll, (error, results, fields) => {
+  connection.query(queryAll, [ paperId ], (error, results, fields) => {
     if (error) {
       console.error('Error querying MySQL: ', error);
       return res.status(500).json({error: 'Internal Server Error'});
