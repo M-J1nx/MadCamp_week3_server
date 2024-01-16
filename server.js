@@ -4,9 +4,10 @@ const bodyParser = require('body-parser');
 const { exec } = require('child_process');
 const cors = require("cors");
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const connection = mysql.createConnection({
   host: '43.202.79.6',
@@ -183,6 +184,7 @@ app.post('/hasroll', (req, res) => {
 });
 
 /* Get user all posts body */
+const { createProxyMiddleware } = require("http-proxy-middleware");
 app.get('/result', (req, res) => {
   const { paperId } = req.query;
   const queryGetPostBody = `SELECT * FROM post WHERE paperId=?`;
@@ -197,15 +199,7 @@ app.get('/result', (req, res) => {
 });
 
 /* execute python file */
-app.get('/executePython', (req, res) => {
-  const result = require('child_process').spawn('python', [ 'SummaryAPI.py']);
-  result.stdout.on('data', function(data) {
-    console.log(data.toString());
-  });
-  result.stderr.on('data', function (data) {
-    console.log(data.toString());
-  });
-})
+
 
 /* Keep receiving request */
 app.listen(port, () => {
