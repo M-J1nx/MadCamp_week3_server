@@ -223,14 +223,14 @@ app.post('/delpost', (req, res) => {
 });
 
 /* Get Keywords */
-// var mod = require('korean-text-analytics');
-// var task = new mod.TaskQueue();
-// app.post('/keyword', (req, res) => {
-//   const { body } = req.body;
-//   mod.ExecuteMorphModule(body, function(err, rep) {
-//     console.log(err, rep);
-//   })
-// })
+var mod = require('korean-text-analytics');
+var task = new mod.TaskQueue();
+app.post('/keyword', (req, res) => {
+  const { body } = req.body;
+  mod.ExecuteMorphModule(body, function(err, rep) {
+    console.log(err, rep);
+  })
+})
 
 
 /* Keep receiving request */
