@@ -223,7 +223,7 @@ app.post('/delpost', (req, res) => {
 });
 
 /* Get Keywords */
-// var mod = require('korean-text-analytics');
+var mod = require('korean-text-analytics');
 // var task = new mod.TaskQueue();
 // app.post('/keyword', (req, res) => {
 //   const { body } = req.body;
