@@ -227,8 +227,6 @@ var mod = require('korean-text-analytics');
 var task = new mod.TaskQueue();
 
 app.post('/keyword', (req, res) => {
-  const { body } = req.body;
-  console.log('수신받음')
   // korean-text-analytics 모듈을 사용하여 텍스트 분석 수행
   
 });
