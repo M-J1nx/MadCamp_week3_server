@@ -278,7 +278,7 @@ app.post('/part', (req, res) => {
 
   var access_key = '927d719a-0821-4809-b527-3046f1d61a2e';
   var analysisCode = 'morp';
-  var text = '아버지가';
+  var text = '아버지 가방에 들어가신다.';
 
   var requestJson = {  
     'argument': {
@@ -294,7 +294,6 @@ app.post('/part', (req, res) => {
       headers: {'Content-Type':'application/json','Authorization':access_key}
   };
   request.post(options, function (error, response, body) {
-      console.log('responseCode = ' + response.statusCode);
       res.json(body);
   });
 
