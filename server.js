@@ -228,14 +228,18 @@ var task = new mod.TaskQueue();
 
 app.post('/keyword', (req, res) => {
   const { body } = req.body;
-  mod.ExecuteMorphModule(body, function(err, rep) {
-    if (error) {
-      console.error('Error deleting post from MySQL: ', error);
+
+  // korean-text-analytics 모듈을 사용하여 텍스트 분석 수행
+  mod.ExecuteMorphModule(body, (err, rep) => {
+    if (err) {
+      console.error('Error during Korean text analysis: ', err);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
-    console.log(err, rep);
-  })
-})
+
+    // 분석 결과를 클라이언트에게 응답
+    return res.json({ result: rep });
+  });
+});
 
 
 /* Keep receiving request */
