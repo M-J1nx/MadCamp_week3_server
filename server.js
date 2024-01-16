@@ -197,13 +197,15 @@ app.get('/result', (req, res) => {
 });
 
 /* execute python file */
-const result = require('child_process').spawn('python', [ 'SummaryAPI.py']);
-result.stdout.on('data', function(data) {
-  console.log(data.toString());
-});
-result.stderr.on('data', function (data) {
-  console.log(data.toString());
-});
+app.get('/executePython', (req, res) => {
+  const result = require('child_process').spawn('python', [ 'SummaryAPI.py']);
+  result.stdout.on('data', function(data) {
+    console.log(data.toString());
+  });
+  result.stderr.on('data', function (data) {
+    console.log(data.toString());
+  });
+})
 
 /* Keep receiving request */
 app.listen(port, () => {
