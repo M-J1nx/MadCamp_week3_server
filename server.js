@@ -197,21 +197,13 @@ app.get('/result', (req, res) => {
 });
 
 /* execute python file */
-// app.get('/executeSummaryAPI', (req, res) => {
-//   exec('python SummaryAPI.py', (error, stdout, stderr) => {
-//       if (error) {
-//           console.error(`Error executing SummaryAPI.py: ${error}`);
-//           return res.status(500).send('Internal Server Error');
-//       }
-//       console.log(`SummaryAPI.py output: ${stdout}`);
-//       res.status(200).send('SummaryAPI.py executed successfully');
-//   });
-// });
-
-// app.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
-
+const result = require('child_process').spawn('python', [ 'SummaryAPI.py']);
+result.stdout.on('data', function(data) {
+  console.log(data.toString());
+});
+result.stderr.on('data', function (data) {
+  console.log(data.toString());
+});
 
 /* Keep receiving request */
 app.listen(port, () => {
