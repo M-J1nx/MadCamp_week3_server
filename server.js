@@ -238,8 +238,8 @@ app.post('/api', async (req, res) => {
   };
 
   var language = "ko";
-  var model = "news";
-  var tone = "2";
+  var model = "general";
+  var tone = "1";
   var summaryCount = "1";
   var title = "";
   var url = "https://naveropenapi.apigw.ntruss.com/text-summary/v1/summarize";
@@ -299,8 +299,50 @@ app.post('/part', (req, res) => {
   request.post(options, function (error, response, body) {
       res.json(body);
   });
+});
 
-})
+/* Crolling Image */
+const PixabayApi = require('node-pixabayclient');
+const PixabayPhotos = new PixabayApi({ apiUrl: "https://pixabay.com/api/" });
+const APIkey = "41857767-18ee138d2d3d3a1bd6883675f";
+
+app.post('/croll', async (req, res) => {
+  const { imgWords } = req.body;
+  const q = JSON.stringify(imgWords);
+
+  const params = {
+    key: APIkey,
+    q: q,
+    image_type: "photo",
+    lang: "ko",
+    page: 1
+  };
+
+  try {
+    const pixabayResponse = await new Promise((resolve, reject) => {
+      PixabayPhotos.query(params, (errors, res, req) => {
+        if (errors) {
+          reject(errors);
+        } else {
+          resolve(res);
+        }
+      });
+    });
+
+    console.log(pixabayResponse);
+
+    // 여기에서 필요한 데이터를 추출하여 원하는 형태의 응답 객체를 생성할 수 있습니다.
+    const responseData = {
+      data: pixabayResponse,
+    };
+
+    res.status(200).json(responseData);
+  } catch (error) {
+    console.error('Error during Pixabay API request:', error.message);
+    res.status(500).json({ status: 'error', message: 'Internal Server Error' });
+  }
+});
+
 
 
 /* Keep receiving request */
