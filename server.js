@@ -223,23 +223,14 @@ app.post('/delpost', (req, res) => {
 });
 
 /* Get Keywords */
-var mod = require('korean-text-analytics');
-var task = new mod.TaskQueue();
-
+// var mod = require('korean-text-analytics');
+// var task = new mod.TaskQueue();
 // app.post('/keyword', (req, res) => {
 //   const { body } = req.body;
-//   console.log('수신받음')
-//   // korean-text-analytics 모듈을 사용하여 텍스트 분석 수행
-//   mod.ExecuteMorphModule(body, (err, rep) => {
-//     if (err) {
-//       console.error('Error during Korean text analysis: ', err);
-//       return res.status(500).json({ error: 'Internal Server Error' });
-//     }
-//     console.log('작동')
-//   });
-// });
-
-
+//   mod.ExecuteMorphModule(body, function(err, rep) {
+//     console.log(err, rep);
+//   })
+// })
 
 
 /* Keep receiving request */
