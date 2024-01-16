@@ -187,7 +187,8 @@ app.post('/hasroll', (req, res) => {
 /* Get user all posts body */
 app.get('/result', (req, res) => {
   const { paperId } = req.query;
-  const queryGetPostBody = `SELECT * FROM post WHERE paperId=?`;
+  // const queryGetPostBody = `SELECT * FROM post WHERE paperId=?`;
+  const queryGetPostBody = `SELECT * FROM paper INNER JOIN user ON paper.userId=user.userId WHERE paperId=?`;
 
   connection.query(queryGetPostBody, [ paperId ], (error, results, fields) => {
     if (error) {
