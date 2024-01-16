@@ -1,15 +1,13 @@
-const express = require('express');
-const mysql = require('mysql');
-const bodyParser = require('body-parser');
-const { exec } = require('child_process');
-const cors = require("cors");
-const app = express();
+let mecab = require('mecab-ya');
+let text = '아버지가방에들어가신다.';
 
-var mod = require('korean-text-analytics');
-var task = new mod.TaskQueue();
-app.post('/keyword', (req, res) => {
-  const { body } = req.body;
-  mod.ExecuteMorphModule(body, function(err, rep) {
-    console.log(err, rep);
-  })
-})
+console.log(text);
+mecab.pos(text, (err, result) => {
+    console.log('pos : ', result);
+});
+
+mecab.morphs(text, (err, result) => {
+    console.log('morphs : ', result.toString());
+});
+
+console.log('nouns : ', mecab.nounsSync(text));

@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const { exec } = require('child_process');
 const cors = require("cors");
+const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -184,6 +185,7 @@ app.post('/hasroll', (req, res) => {
 });
 
 /* Get user all posts body */
+const { createProxyMiddleware } = require("http-proxy-middleware");
 app.get('/result', (req, res) => {
   const { paperId } = req.query;
   const queryGetPostBody = `SELECT * FROM post WHERE paperId=?`;
@@ -222,15 +224,53 @@ app.post('/delpost', (req, res) => {
   });
 });
 
-/* Get Keywords */
-// var mod = require('korean-text-analytics');
-// var task = new mod.TaskQueue();
-// app.post('/keyword', (req, res) => {
-//   const { body } = req.body;
-//   mod.ExecuteMorphModule(body, function(err, rep) {
-//     console.log(err, rep);
-//   })
-// });
+/* API */
+app.post('/api', async (req, res) => {
+  const { result } = req.body;
+
+  var client_id = "mdyy1cdvly";
+  var client_secret = "32GVEkD8L7xwRoaMnRgGnLbTVZJ87tyo7M6Blt46";
+  var headers = {
+    "X-NCP-APIGW-API-KEY-ID": client_id,
+    "X-NCP-APIGW-API-KEY": client_secret,
+    "Content-Type": "application/json"
+  };
+
+  var language = "ko";
+  var model = "news";
+  var tone = "2";
+  var summaryCount = "1";
+  var title = "'하루 2000억' 판 커지는 간편송금 시장";
+  var url = "https://naveropenapi.apigw.ntruss.com/text-summary/v1/summarize";
+  var content = "내 친구는 착하고 성실해요. 따스한 햇살같은 친구입니다. \n웃는 모습이 이뻐요. 햇살 같은 친구에요. 내가 제일 좋아하는 친구\n언젠가 노란 후드티를 입고 왔는데 잘 어울렸어요. 산뜻한 색이 잘 어울리는 친구인 것 같아요. \n독특한 안경을 꼈던 게 기억나요. 동그란 안경이었는데, 색깔이 분홍색이었어요. 항상 활기차고 활발한 친구라 잘 어울린다고 생각했습니다. \n운동을 정말 잘 해요! 같이 농구를 했는데 정말 잘 가르쳐 줬습니다. 몰입하는 모습이 아름다운 친구에요.";
+  var data = {
+    "document": {
+      "title": title,
+      "content": content
+    },
+    "option": {
+      "language": language,
+      "model": model,
+      "tone": tone,
+      "summaryCount": summaryCount
+    }
+  };
+
+  try {
+    const response = await axios.post(url, data, { headers: headers });
+    var rescode = response.status;
+    if (rescode === 200) {
+      console.log(response.data);
+      res.json(response.data); // 수정된 부분
+    } else {
+      console.log("Error: " + response.data);
+      res.status(rescode).json({ error: response.data }); // 수정된 부분
+    }
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: 'Internal Server Error' }); // 수정된 부분
+  }
+});
 
 
 /* Keep receiving request */
