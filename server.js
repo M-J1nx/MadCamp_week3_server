@@ -225,9 +225,14 @@ app.post('/delpost', (req, res) => {
 /* Get Keywords */
 var mod = require('korean-text-analytics');
 var task = new mod.TaskQueue();
+
 app.post('/keyword', (req, res) => {
   const { body } = req.body;
   mod.ExecuteMorphModule(body, function(err, rep) {
+    if (error) {
+      console.error('Error deleting post from MySQL: ', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
     console.log(err, rep);
   })
 })
