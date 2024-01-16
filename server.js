@@ -272,6 +272,34 @@ app.post('/api', async (req, res) => {
   }
 });
 
+/* 형태소 */
+app.post('/part', (req, res) => {
+  var openApiURL = "http://aiopen.etri.re.kr:8000/WiseNLU"; 
+
+  var access_key = '927d719a-0821-4809-b527-3046f1d61a2e';
+  var analysisCode = 'morp';
+  var text = '아버지가';
+
+  var requestJson = {  
+    'argument': {
+        'text': text,
+        'analysis_code': analysisCode
+    }
+  };
+
+  var request = require('request');
+  var options = {
+      url: openApiURL,
+      body: JSON.stringify(requestJson),
+      headers: {'Content-Type':'application/json','Authorization':access_key}
+  };
+  request.post(options, function (error, response, body) {
+      console.log('responseCode = ' + response.statusCode);
+      res.json(body);
+  });
+
+})
+
 
 /* Keep receiving request */
 app.listen(port, () => {

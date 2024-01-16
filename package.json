@@ -17,7 +17,8 @@
     "http-proxy-middleware": "^2.0.6",
     "korean-text-analytics": "^0.0.7",
     "mecab-ya": "^0.1.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "request": "^2.88.2"
   },
   "proxy": "https://naveropenapi.apigw.ntruss.com/text-summary/v1/summarize"
 }
