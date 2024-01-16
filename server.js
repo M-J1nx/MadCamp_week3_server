@@ -228,16 +228,14 @@ var task = new mod.TaskQueue();
 
 app.post('/keyword', (req, res) => {
   const { body } = req.body;
-
+  console.log('수신받음')
   // korean-text-analytics 모듈을 사용하여 텍스트 분석 수행
   mod.ExecuteMorphModule(body, (err, rep) => {
     if (err) {
       console.error('Error during Korean text analysis: ', err);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    // 분석 결과를 클라이언트에게 응답
-    return res.json({ result: rep });
+    console.log('작동')
   });
 });
 
