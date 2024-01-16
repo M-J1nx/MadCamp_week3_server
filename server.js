@@ -184,7 +184,6 @@ app.post('/hasroll', (req, res) => {
 });
 
 /* Get user all posts body */
-const { createProxyMiddleware } = require("http-proxy-middleware");
 app.get('/result', (req, res) => {
   const { paperId } = req.query;
   const queryGetPostBody = `SELECT * FROM post WHERE paperId=?`;
@@ -198,7 +197,40 @@ app.get('/result', (req, res) => {
   });
 });
 
-/* execute python file */
+/* Delete post */
+app.post('/delpost', (req, res) => {
+  const { postId, userId } = req.body;
+  const queryCheckUser = `SELECT * FROM post WHERE postId=?`;
+
+  connection.query(queryCheckUser, [postId], (error, results, fields) => {
+    if (error) {
+      console.error('Error querying MySQL: ', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    if (results[0].userId === userId) {
+      const queryDeletePost = `DELETE FROM post WHERE postId=?`;
+      connection.query(queryDeletePost, [postId], (error, deleteResults, deleteFields) => {
+        if (error) {
+          console.error('Error deleting post from MySQL: ', error);
+          return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return res.json({ message: 'true' });
+      });
+    } else {
+      return res.json({ message: 'false' });
+    }
+  });
+});
+
+/* Get Keywords */
+var mod = require('korean-text-analytics');
+var task = new mod.TaskQueue();
+app.post('/keyword', (req, res) => {
+  const { body } = req.body;
+  mod.ExecuteMorphModule(body, function(err, rep) {
+    console.log(err, rep);
+  })
+})
 
 
 /* Keep receiving request */
