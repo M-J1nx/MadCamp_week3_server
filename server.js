@@ -111,7 +111,8 @@ app.post('/Roll', (req, res) => {
 
 /* Show Entire Board */
 app.get('/all', (req, res) => {
-  const queryAll = `SELECT paperId FROM paper`;
+  //const queryAll = `SELECT paperId FROM paper`;
+  const queryAll = `SELECT * FROM paper INNER JOIN user ON paper.userId=user.userId`;
   connection.query(queryAll, (error, results, fields) => {
     if (error) {
       console.error('Error querying MySQL: ', error);
@@ -187,8 +188,7 @@ app.post('/hasroll', (req, res) => {
 /* Get user all posts body */
 app.get('/result', (req, res) => {
   const { paperId } = req.query;
-  // const queryGetPostBody = `SELECT * FROM post WHERE paperId=?`;
-  const queryGetPostBody = `SELECT * FROM paper INNER JOIN user ON paper.userId=user.userId WHERE paperId=?`;
+  const queryGetPostBody = `SELECT * FROM post WHERE paperId=?`;
 
   connection.query(queryGetPostBody, [ paperId ], (error, results, fields) => {
     if (error) {
